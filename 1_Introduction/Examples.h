@@ -12,8 +12,9 @@ using namespace std;
 
 class Examples {
     public:
-        string imagePath = "../data/jlh.jpg";
-        string videoPath = "../data/gwp.mp4";
+        string _imagePath = "../data/jlh.jpg";
+        string _videoPath = "../data/gwp.mp4";
+        cv::Mat _image = cv::imread(_imagePath, -1);
 
     private:
 };
