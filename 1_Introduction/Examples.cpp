@@ -11,7 +11,6 @@ using namespace std;
 
 void example_1(Examples &ex) {
     cv::Mat img = cv::imread(ex._imagePath, -1);
-    cv::resize(img, img, cv::Size(img.cols * 0.5, img.rows * 0.5));
     if (img.empty())
         return ;
     cv::namedWindow("Example1", cv::WINDOW_AUTOSIZE);
@@ -69,7 +68,7 @@ void example_3(Examples &ex) {
             cv::imshow( "Example3", frame );
             g_run-=1;
         }
-        char c = (char)cv::waitKey(5);
+        char c = (char)cv::waitKey(2);
         if( c == 's' ) {// single step
             g_run = 1;
             cout << "Single step, run = " << g_run << endl;
@@ -85,7 +84,6 @@ void example_3(Examples &ex) {
 }
 
 void example_4(Examples &ex) { // Create some windows to show the input
-    cv::resize(ex._image, ex._image, cv::Size(ex._image.cols * 0.5, ex._image.rows * 0.5));
 // and output images in.A Simple Transformation | 31
     cv::namedWindow( "Example4in", cv::WINDOW_AUTOSIZE );
     cv::namedWindow( "Example4out", cv::WINDOW_AUTOSIZE );
@@ -107,13 +105,42 @@ void example_4(Examples &ex) { // Create some windows to show the input
     cv::destroyWindow("Example4in");
 }
 
-int example_5() { // Create some windows to show the input
+void example_5(Examples &ex) {
+    cv::Mat img_rgb, img_gry, img_cny;
+    cv::namedWindow( "Example Gray",  cv::WINDOW_AUTOSIZE );
+    cv::namedWindow( "Example Canny", cv::WINDOW_AUTOSIZE );
+    img_rgb = ex._image;
+//cv::resize(ex._image, ex._image, cv::Size(ex._image.cols * 0.5, ex._image.rows * 0.5));
+    //cv::resize(img_rgb, img_rgb, cv::Size(img_rgb.cols * 0.5, img_rgb.rows * 0.5));
+    cv::imshow("Example Rgb", img_rgb);
+    cv::cvtColor(img_rgb, img_gry, cv::COLOR_BGR2GRAY);
+    cv::imshow("Example Gray", img_gry);
+    cv::Canny(img_gry, img_cny, 10, 100, 3, true);
+    cv::imshow("Example Canny", img_cny);
+    cv::waitKey(0);
+    cv::destroyWindow("Example Rgb");
+    cv::destroyWindow("Example Gray");
+    cv::destroyWindow("Example Canny");}
+
+int example_6() {
     int pid, status;
 
     if (pid = fork()) {
         waitpid(pid, &status, 0); // wait for the child to exit
     } else {
         const char executable[] = "./lkdemo";
+        execl(executable, executable, NULL);
+    }
+    return status;
+}
+
+int example_7() {
+    int pid, status;
+
+    if (pid = fork()) {
+        waitpid(pid, &status, 0);
+    } else {
+        const char executable[] = "./facedetect";
         execl(executable, executable, NULL);
     }
     return status;
@@ -127,6 +154,9 @@ int main(int ac, char **av) {
     example_2(ex);
     example_3(ex);
     example_4(ex);
-    example_5();
+    example_5(ex);
+    example_6();
+    example_7();
+
     return 0;
 }

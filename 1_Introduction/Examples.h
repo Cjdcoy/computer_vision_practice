@@ -12,7 +12,7 @@ using namespace std;
 
 class Examples {
     public:
-        string _imagePath = "../data/jlh.jpg";
+        string _imagePath = "../data/road.jpg";
         string _videoPath = "../data/gwp.mp4";
         cv::Mat _image = cv::imread(_imagePath, -1);
 
